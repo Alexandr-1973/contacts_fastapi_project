@@ -1,0 +1,39 @@
+{% extends "quotes/base.html" %}
+
+{% block content %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+{% endblock %}
+
+<form method="POST" action="{% url 'quotes:add_quote' %}">
+    <h2>Enter the quote</h2>
+    {% csrf_token %}
+    <div style="padding: 10px">
+        <label>Enter quote:
+            {{form.quote}}
+        </label>
+        <span>{{ form.errors.name }}</span>
+    </div>
+
+    <div style="padding: 10px">
+        <label>Enter tags:
+            {{form.tags}}
+        </label>
+        <span>{{ form.errors.name }}</span>
+    </div>
+
+   <div style="padding: 10px">
+        <label>Enter author:
+            {{form.author}}
+        </label>
+        <span>{{ form.errors.name }}</span>
+    </div>
+
+    <div class="grid">
+        <button type="submit">Submit</button>
+        <button type="reset" class="secondary">Reset</button>
+    </div>
+</form>
+
+{% endblock %}
