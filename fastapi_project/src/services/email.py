@@ -21,6 +21,20 @@ conf = ConnectionConfig(
 
 
 async def send_email(email: EmailStr, username: str, host: str):
+    """
+    Sends a confirmation email to the user.
+
+    This function sends an email with a verification token and a confirmation
+    link to the specified email address.
+
+    :param email: Email address of the recipient.
+    :type email: EmailStr
+    :param username: Username of the recipient.
+    :type username: str
+    :param host: Base URL or domain to be used in the confirmation link.
+    :type host: str
+    :raises ConnectionErrors: If sending the email fails due to a connection issue.
+    """
     try:
         token_verification = auth_service.create_email_token({"sub": email})
         message = MessageSchema(
@@ -36,6 +50,20 @@ async def send_email(email: EmailStr, username: str, host: str):
         print(err)
 
 async def send_rp_email(email: EmailStr, username: str, host: str):
+    """
+    Sends a password reset email to the user.
+
+    This function sends an email containing a reset token and a link to reset
+    the password.
+
+    :param email: Email address of the recipient.
+    :type email: EmailStr
+    :param username: Username of the recipient.
+    :type username: str
+    :param host: Base URL or domain to be used in the reset link.
+    :type host: str
+    :raises ConnectionErrors: If sending the email fails due to a connection issue.
+    """
     try:
         token_verification = auth_service.create_email_token({"sub": email})
         message = MessageSchema(

@@ -6,5 +6,11 @@ engine = create_async_engine(config.DB_URL)
 SessionLocal = async_sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 async def get_db():
+    """
+    Dependency, providing an asynchronous database session for FastAPI routes.
+
+    :yield: SQLAlchemy AsyncSession.
+    :rtype: AsyncGenerator[AsyncSession, None]
+    """
     async with SessionLocal() as session:
         yield session

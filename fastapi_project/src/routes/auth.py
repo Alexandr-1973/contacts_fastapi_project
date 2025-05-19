@@ -14,6 +14,16 @@ get_refresh_token = HTTPBearer()
 
 @router.post("/signup", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def signup(body: UserSchema, bt: BackgroundTasks, request: Request, db: AsyncSession = Depends(get_db)):
+    """
+    Register a new user account.
+
+    :param body: User registration data.
+    :param bt: Background task manager.
+    :param request: HTTP request object.
+    :param db: Database session.
+    :return: Created user details.
+    :raises HTTPException: If the email already exists.
+    """
     exist_user = await repositories_users.get_user_by_email(body.email, db)
     if exist_user:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Account already exists")
@@ -24,6 +34,14 @@ async def signup(body: UserSchema, bt: BackgroundTasks, request: Request, db: As
 
 @router.post("/login",  response_model=TokenSchema)
 async def login(body: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):
+    """
+    Authenticate a user and generate JWT tokens.
+
+    :param body: Login credentials.
+    :param db: Database session.
+    :return: Access and refresh tokens.
+    :raises HTTPException: If authentication fails or email is not confirmed.
+    """
     user = await repositories_users.get_user_by_email(body.username, db)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email")
@@ -40,6 +58,14 @@ async def login(body: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = 
 @router.get('/refresh_token',  response_model=TokenSchema)
 async def refresh_token(credentials: HTTPAuthorizationCredentials = Depends(get_refresh_token),
                         db: AsyncSession = Depends(get_db)):
+    """
+    Refresh access and refresh tokens using a valid refresh token.
+
+    :param credentials: Bearer token credentials.
+    :param db: Database session.
+    :return: New access and refresh tokens.
+    :raises HTTPException: If token is invalid.
+    """
     token = credentials.credentials
     email = await auth_service.decode_refresh_token(token)
     user = await repositories_users.get_user_by_email(email, db)
@@ -54,6 +80,14 @@ async def refresh_token(credentials: HTTPAuthorizationCredentials = Depends(get_
 
 @router.get('/confirmed_email/{token}')
 async def confirmed_email(token: str, db: AsyncSession = Depends(get_db)):
+    """
+    Confirm a user's email via token.
+
+    :param token: Email confirmation token.
+    :param db: Database session.
+    :return: Confirmation message.
+    :raises HTTPException: If token is invalid.
+    """
     email = await auth_service.get_email_from_token(token)
     user = await repositories_users.get_user_by_email(email, db)
     if user is None:
@@ -66,6 +100,15 @@ async def confirmed_email(token: str, db: AsyncSession = Depends(get_db)):
 @router.post('/request_email')
 async def request_email(body: RequestEmail, background_tasks: BackgroundTasks, request: Request,
                         db: AsyncSession = Depends(get_db)):
+    """
+    Send a confirmation email if the email is not confirmed yet.
+
+    :param body: Email input.
+    :param background_tasks: Background task manager.
+    :param request: HTTP request object.
+    :param db: Database session.
+    :return: Status message.
+    """
     user = await repositories_users.get_user_by_email(body.email, db)
 
     if user.confirmed:
@@ -77,6 +120,15 @@ async def request_email(body: RequestEmail, background_tasks: BackgroundTasks, r
 @router.post('/request_reset_password')
 async def request_reset_email(body: RequestEmail, background_tasks: BackgroundTasks, request: Request,
                         db: AsyncSession = Depends(get_db)):
+    """
+    Send a password reset email.
+
+    :param body: Email input.
+    :param background_tasks: Background task manager.
+    :param request: HTTP request object.
+    :param db: Database session.
+    :return: Status message.
+    """
     user = await repositories_users.get_user_by_email(body.email, db)
 
     if not user:
@@ -87,6 +139,13 @@ async def request_reset_email(body: RequestEmail, background_tasks: BackgroundTa
 
 @router.get('/reset_password_form/{token}')
 async def reset_password_form(request: Request, token: str):
+    """
+    Render the HTML form for password reset.
+
+    :param request: HTTP request object.
+    :param token: Password reset token.
+    :return: HTML form template.
+    """
     return templates.TemplateResponse("reset_password_form.html", {"request": request, "token": token})
 
 @router.post('/reset_password/{token}')
@@ -97,6 +156,16 @@ async def reset_password(
     confirm_password: str = Form(...),
     db: AsyncSession = Depends(get_db),
 ):
+    """
+    Process the password reset.
+
+    :param request: HTTP request object.
+    :param token: Password reset token.
+    :param new_password: New password.
+    :param confirm_password: Password confirmation.
+    :param db: Database session.
+    :return: Success or error message.
+    """
     if new_password != confirm_password:
 
         return templates.TemplateResponse(

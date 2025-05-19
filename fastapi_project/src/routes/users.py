@@ -31,6 +31,14 @@ cloudinary.config(
     dependencies=[Depends(RateLimiter(times=1, seconds=20))],
 )
 async def get_current_user(user: User = Depends(auth_service.get_current_user)):
+    """
+    Retrieve the current authenticated user.
+
+    :param user: The current authenticated user, resolved from the access token.
+    :type user: User
+    :return: The authenticated user's details.
+    :rtype: UserResponse
+    """
     return user
 
 
@@ -39,11 +47,25 @@ async def get_current_user(user: User = Depends(auth_service.get_current_user)):
     response_model=UserResponse,
     dependencies=[Depends(RateLimiter(times=1, seconds=60, identifier=auth_service.get_email_from_request))],
 )
-async def get_current_user(
+async def update_user_avatar(
     file: UploadFile = File(),
     user: User = Depends(auth_service.get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
+    """
+    Upload and update the avatar for the current user.
+
+    The image is uploaded to Cloudinary and a resized (250x250) image URL is stored in the database.
+
+    :param file: The uploaded avatar image file.
+    :type file: UploadFile
+    :param user: The current authenticated user.
+    :type user: User
+    :param db: Database session.
+    :type db: AsyncSession
+    :return: The updated user with the new avatar URL.
+    :rtype: UserResponse
+    """
     public_id = f"Web16/{user.email}"
     res = cloudinary.uploader.upload(file.file, public_id=public_id, owerite=True)
     res_url = cloudinary.CloudinaryImage(public_id).build_url(

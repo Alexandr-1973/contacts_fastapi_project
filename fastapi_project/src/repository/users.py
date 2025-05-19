@@ -9,6 +9,16 @@ from fastapi_project.src.schemas import UserSchema
 
 
 async def get_user_by_email(email: str, db: AsyncSession = Depends(get_db)):
+    """
+    Retrieve a user from the database by email.
+
+    :param email: Email address of the user.
+    :type email: str
+    :param db: Async SQLAlchemy session.
+    :type db: AsyncSession
+    :return: User object if found, else None.
+    :rtype: User or None
+    """
     stmt = select(User).filter_by(email=email)
     user = await db.execute(stmt)
     user = user.scalar_one_or_none()
@@ -16,6 +26,16 @@ async def get_user_by_email(email: str, db: AsyncSession = Depends(get_db)):
 
 
 async def create_user(body: UserSchema, db: AsyncSession = Depends(get_db)):
+    """
+    Create a new user with optional Gravatar avatar.
+
+    :param body: Schema with user registration data.
+    :type body: UserSchema
+    :param db: Async SQLAlchemy session.
+    :type db: AsyncSession
+    :return: The newly created User object.
+    :rtype: User
+    """
     avatar = None
     try:
         g = Gravatar(body.email)
@@ -31,15 +51,45 @@ async def create_user(body: UserSchema, db: AsyncSession = Depends(get_db)):
 
 
 async def update_token(user: User, token: str | None, db: AsyncSession):
+    """
+    Update a user's refresh token.
+
+    :param user: User object to update.
+    :type user: User
+    :param token: New refresh token or None.
+    :type token: str or None
+    :param db: Async SQLAlchemy session.
+    :type db: AsyncSession
+    """
     user.refresh_token = token
     await db.commit()
 
 async def confirmed_email(email: str, db: AsyncSession) -> None:
+    """
+    Set a user's confirmed email flag to True.
+
+    :param email: Email address of the user.
+    :type email: str
+    :param db: Async SQLAlchemy session.
+    :type db: AsyncSession
+    """
     user = await get_user_by_email(email, db)
     user.confirmed = True
     await db.commit()
 
 async def update_avatar_url(email: str, url: str | None, db: AsyncSession) -> User:
+    """
+    Update the avatar URL of a user.
+
+    :param email: Email address of the user.
+    :type email: str
+    :param url: New avatar URL or None.
+    :type url: str or None
+    :param db: Async SQLAlchemy session.
+    :type db: AsyncSession
+    :return: Updated User object.
+    :rtype: User
+    """
     user = await get_user_by_email(email, db)
     user.avatar = url
     await db.commit()
@@ -47,5 +97,16 @@ async def update_avatar_url(email: str, url: str | None, db: AsyncSession) -> Us
     return user
 
 async def update_user_password(user: User, hash_password, db: AsyncSession):
+    """
+    Update a user's password (already hashed).
+
+    :param user: User object to update.
+    :type user: User
+    :param hash_password: Hashed password string.
+    :type hash_password: str
+    :param db: Async SQLAlchemy session.
+    :type db: AsyncSession
+    """
     user.password = hash_password
     await db.commit()
+
