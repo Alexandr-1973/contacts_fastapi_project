@@ -2,7 +2,6 @@ from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from libgravatar import Gravatar
-
 from fastapi_project.src.database.db import get_db
 from fastapi_project.src.database.models import User
 from fastapi_project.src.schemas import UserSchema
@@ -41,7 +40,8 @@ async def create_user(body: UserSchema, db: AsyncSession = Depends(get_db)):
         g = Gravatar(body.email)
         avatar = g.get_image()
     except Exception as err:
-        print(err)
+        print("avatar = None")
+        # avatar = None
 
     new_user = User(**body.model_dump(), avatar=avatar)
     db.add(new_user)
