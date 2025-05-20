@@ -1,6 +1,6 @@
 from datetime import date, datetime
 from typing import Optional
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 
 
 class ContactSchema(BaseModel):
@@ -16,9 +16,9 @@ class ContactResponseSchema(ContactSchema):
 
     id: int = 1
     created_at: datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+    # class Config:
+    #     from_attributes = True
 
 class UserSchema(BaseModel):
     username: str = Field(min_length=3, max_length=50)
@@ -31,9 +31,9 @@ class UserResponse(BaseModel):
     username: str
     email: EmailStr
     avatar: str
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+    # class Config:
+    #     from_attributes = True
 
 
 class TokenSchema(BaseModel):
