@@ -24,3 +24,12 @@ poetry run pytest test_route_auth.py -v:
 pytest-cov from root (goit-pyweb-hw-14):
 
 PYTHONPATH=fastapi_project poetry run pytest --cov=fastapi_project/src fastapi_project/tests
+
+win
+
+pytest --cov=fastapi_project/tests/
+
+poetry run pytest fastapi_project/tests/test_route_auth.py
+
+poetry run pytest fastapi_project/tests/test_route_contacts.py
+

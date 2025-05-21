@@ -32,7 +32,8 @@ dependencies = [
     "pytest (>=8.3.5,<9.0.0)",
     "httpx (>=0.28.1,<0.29.0)",
     "pytest-asyncio (>=0.26.0,<0.27.0)",
-    "aiosqlite (>=0.21.0,<0.22.0)"
+    "aiosqlite (>=0.21.0,<0.22.0)",
+    "pytest-mock (>=3.14.0,<4.0.0)"
 ]
 
 
@@ -53,4 +54,6 @@ pytest-cov = "^6.1.1"
 pythonpath = ["fastapi_project"]
 addopts = "--cov=fastapi_project/src"
 testpaths = ["fastapi_project/tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "module"
 
