@@ -12,7 +12,7 @@ async def test_send_email_success(mock_create_token, mock_fastmail):
     mock_fastmail.return_value = mock_fm_instance
 
     await send_email(
-        email="test@example.com",  # 👈 Просто строка, не EmailStr()
+        email="test@example.com",
         username="testuser",
         host="http://localhost:8000"
     )
