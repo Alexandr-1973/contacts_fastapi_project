@@ -5,10 +5,9 @@ uvicorn fastapi_project.main:app --reload
 alembic from root (goit-pyweb-hw-14):
 
 alembic -c fastapi_project/alembic.ini revision --autogenerate -m "Init"
-
 alembic -c fastapi_project/alembic.ini upgrade head
 
-docker from root (goit-pyweb-hw-14):
+docker-compose from root (goit-pyweb-hw-14):
 
 docker-compose -f ./fastapi_project/src/docker-compose.yml up
 
@@ -18,18 +17,8 @@ SPHINX_BUILD=1 make html
 
 pytest from root (goit-pyweb-hw-14):
 
-poetry run pytest
-poetry run pytest test_route_auth.py -v:
+poetry run pytest fastapi_project/tests/test_route_auth.py -W ignore::DeprecationWarning
+poetry run pytest -W ignore::DeprecationWarning
+poetry run pytest --cov=fastapi_project/tests/ -W ignore::DeprecationWarning
 
-pytest-cov from root (goit-pyweb-hw-14):
-
-PYTHONPATH=fastapi_project poetry run pytest --cov=fastapi_project/src fastapi_project/tests
-
-win
-
-pytest --cov=fastapi_project/tests/
-
-poetry run pytest fastapi_project/tests/test_route_auth.py
-
-poetry run pytest fastapi_project/tests/test_route_contacts.py
 

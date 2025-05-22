@@ -9,7 +9,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent  # src/
 
 if os.getenv("SPHINX_BUILD"):
-    ENV_PATH = BASE_DIR / ".env.example"   # специальный файл для доков
+    ENV_PATH = BASE_DIR / ".env.example"
 else:
     ENV_PATH = BASE_DIR / ".env"
 

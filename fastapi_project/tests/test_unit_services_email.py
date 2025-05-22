@@ -1,7 +1,6 @@
 import pytest
 from unittest.mock import AsyncMock, patch
 from fastapi_mail.errors import ConnectionErrors
-
 from fastapi_project.src.services.email import send_email, send_rp_email
 
 
@@ -30,9 +29,8 @@ async def test_send_email_success(mock_create_token, mock_fastmail):
 async def test_send_rp_email_success(mock_create_token, mock_fastmail):
     mock_fm_instance = AsyncMock()
     mock_fastmail.return_value = mock_fm_instance
-
     await send_rp_email(
-        email="test@example.com",  # 👈 Просто строка
+        email="test@example.com",
         username="testuser",
         host="http://localhost:8000"
     )

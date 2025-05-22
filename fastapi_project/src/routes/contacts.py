@@ -11,8 +11,10 @@ from fastapi_project.src.services.auth import auth_service
 
 router = APIRouter(prefix='/contacts', tags=['contacts'])
 
+
 @router.get("/", response_model=list[ContactResponseSchema], description='No more than 10 requests per minute',
-            dependencies=[Depends(RateLimiter(times=10, seconds=60, identifier=auth_service.get_email_from_request))])
+            dependencies=[Depends(RateLimiter(times=10, seconds=60, identifier=auth_service.get_email_from_request))]
+            )
 async def get_contacts(
     limit: int = Query(10, ge=10, le=500),
     offset: int = Query(0, ge=0),

@@ -1,9 +1,7 @@
 import pytest
-from unittest.mock import AsyncMock, patch
 from datetime import datetime, timedelta, UTC
 from jose import jwt
 from fastapi import HTTPException, status
-
 from fastapi_project.src.services.auth import Auth
 
 @pytest.fixture

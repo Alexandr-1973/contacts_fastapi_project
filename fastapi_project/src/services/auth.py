@@ -52,7 +52,6 @@ class Auth:
         """
         return self.pwd_context.hash(password)
 
-    # define a function to generate a new access token
     async def create_access_token(self, data: dict, expires_delta: Optional[float] = None):
         """
         Generate a new access token.
@@ -73,7 +72,7 @@ class Auth:
         encoded_access_token = jwt.encode(to_encode, self.SECRET_KEY, algorithm=self.ALGORITHM)
         return encoded_access_token
 
-    # define a function to generate a new refresh token
+
     async def create_refresh_token(self, data: dict, expires_delta: Optional[float] = None):
         """
         Generate a new refresh token.
@@ -213,3 +212,7 @@ class Auth:
         return email
 
 auth_service = Auth()
+
+
+def get_password_hash():
+    return None

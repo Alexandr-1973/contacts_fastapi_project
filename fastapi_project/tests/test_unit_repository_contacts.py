@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import MagicMock, AsyncMock, Mock
 from datetime import date, timedelta
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from fastapi_project.src.database.models import Contact, User
 from fastapi_project.src.schemas import ContactSchema
 from fastapi_project.src.repository.contacts import (
