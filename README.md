@@ -98,10 +98,6 @@ With coverage report:
 
 ```bash
 pytest --cov=fastapi_project/tests/ -W ignore::DeprecationWarning
+```
 
 ---
-
-## 🧾 License
-
-MIT License.  
-© [Alexandr-1973](https://github.com/Alexandr-1973)
