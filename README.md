@@ -28,13 +28,13 @@ You can explore and test all available endpoints directly from your browser.
 
 ---
 
-## 🧩 Main Commands
+##  Main Commands
 
 > Or, if not using `poetry shell`, prefix commands with `poetry run`, for example:  
 > `poetry run uvicorn fastapi_project.main:app --reload`
 
 
-### 1. Start services with Docker Compose (from project root)
+###  Start services with Docker Compose (from project root)
 
 ```bash
 docker-compose -f ./fastapi_project/src/docker-compose.yml up
@@ -42,7 +42,7 @@ docker-compose -f ./fastapi_project/src/docker-compose.yml up
 
 ---
 
-### 2. Run Alembic migrations (from project root)
+###  Run Alembic migrations (from project root)
 
 Create a new migration:
 
@@ -58,7 +58,7 @@ alembic -c fastapi_project/alembic.ini upgrade head
 
 ---
 
-### 3. Start FastAPI app (from project root)
+###  Start FastAPI app (from project root)
 
 ```bash
 uvicorn fastapi_project.main:app --reload
@@ -66,7 +66,7 @@ uvicorn fastapi_project.main:app --reload
 
 ---
 
-### 4. Build documentation with Sphinx (from `docs` folder)
+###  Build documentation with Sphinx (from `docs` folder)
 
 ```bash
 SPHINX_BUILD=1 make html
@@ -80,7 +80,7 @@ open _build/html/index.html
 
 ---
 
-### 5. Run tests with Pytest (from project root)
+###  Run tests with Pytest (from project root)
 
 Single test file:
 
