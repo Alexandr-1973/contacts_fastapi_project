@@ -1,54 +1,3 @@
-An API project for managing contacts built with FastAPI, asynchronous SQLAlchemy, and PostgreSQL.  
-Uses Redis for rate limiting and Alembic for database migrations.  
-Documentation is generated with Sphinx.
-
-Tech Stack
-    •	FastAPI (REST API)
-    •	Async SQLAlchemy + PostgreSQL
-    •	Alembic (database migrations)
-    •	Redis + fastapi-limiter (rate limiting)
-    •	Poetry (dependency and environment management)
-    •	Sphinx (documentation)
-    •	Python 3.12
-
-API Documentation
-
-FastAPI automatically generates interactive API docs available at:
-
-- Swagger UI: http://127.0.0.1:8000/docs
-- ReDoc: http://127.0.0.1:8000/redoc
-
-You can use these interfaces to explore all available endpoints and test them directly from the browser.
-
-Main commands:
-
-start with uvicorn from root (contacts_fastapi_project):
-
-uvicorn fastapi_project.main:app --reload
-
-alembic from root (contacts_fastapi_project):
-
-alembic -c fastapi_project/alembic.ini revision --autogenerate -m "Init"
-
-alembic -c fastapi_project/alembic.ini upgrade head
-
-docker-compose from root (contacts_fastapi_project):
-
-docker-compose -f ./fastapi_project/src/docker-compose.yml up
-
-SPHINX from (contacts_fastapi_project)/docs: 
-
-SPHINX_BUILD=1 make html
-
-pytest from root (contacts_fastapi_project):
-
-pytest fastapi_project/tests/test_route_auth.py -W ignore::DeprecationWarning
-
-pytest -W ignore::DeprecationWarning
-
-pytest --cov=fastapi_project/tests/ -W ignore::DeprecationWarning
-
-
 # contacts_fastapi_project
 
 An API project for managing contacts built with **FastAPI**, **asynchronous SQLAlchemy**, and **PostgreSQL**.  
@@ -56,7 +5,7 @@ Uses **Redis** for rate limiting, **Alembic** for database migrations, and **Sph
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 - **FastAPI** – high-performance web framework for building APIs  
 - **Async SQLAlchemy** + **PostgreSQL** – async database layer  
@@ -68,7 +17,7 @@ Uses **Redis** for rate limiting, **Alembic** for database migrations, and **Sph
 
 ---
 
-## 📚 API Documentation
+## API Documentation
 
 FastAPI automatically generates interactive API docs:
 
@@ -81,15 +30,19 @@ You can explore and test all available endpoints directly from your browser.
 
 ## 🧩 Main Commands
 
-### ▶️ Run FastAPI app (from project root)
+> Or, if not using `poetry shell`, prefix commands with `poetry run`, for example:  
+> `poetry run uvicorn fastapi_project.main:app --reload`
+
+
+### 1. Start services with Docker Compose (from project root)
 
 ```bash
-uvicorn fastapi_project.main:app --reload
+docker-compose -f ./fastapi_project/src/docker-compose.yml up
 ```
 
 ---
 
-### 🔃 Alembic migrations (from project root)
+### 2. Run Alembic migrations (from project root)
 
 Create a new migration:
 
@@ -105,15 +58,15 @@ alembic -c fastapi_project/alembic.ini upgrade head
 
 ---
 
-### 🐳 Run services with Docker Compose (from project root)
+### 3. Start FastAPI app (from project root)
 
 ```bash
-docker-compose -f ./fastapi_project/src/docker-compose.yml up
+uvicorn fastapi_project.main:app --reload
 ```
 
 ---
 
-### 🛠 Build documentation with Sphinx (from `docs` folder)
+### 4. Build documentation with Sphinx (from `docs` folder)
 
 ```bash
 SPHINX_BUILD=1 make html
@@ -127,7 +80,7 @@ open _build/html/index.html
 
 ---
 
-### ✅ Run tests with Pytest (from project root)
+### 5. Run tests with Pytest (from project root)
 
 Single test file:
 
@@ -145,7 +98,6 @@ With coverage report:
 
 ```bash
 pytest --cov=fastapi_project/tests/ -W ignore::DeprecationWarning
-```
 
 ---
 
